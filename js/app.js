@@ -410,7 +410,7 @@ function renderStaticCards() {
 
 function renderMeta(meta) {
   if (!meta) { $('last-update').textContent = 'Sin metadatos'; return; }
-  const when = meta.updated ? new Date(meta.updated).toLocaleString('es-AR') : '—';
+  const when = meta.updated ? new Date(meta.updated).toLocaleString('es-AR', { hour12: false, dateStyle: 'short', timeStyle: 'short' }) : '—';
   const feeds = Object.entries(meta.sources || {})
     .map(([name, s]) => `${name} ${s.ok ? '✔' : '✖'}`).join(' · ');
   $('last-update').textContent = `Actualizado: ${when}${feeds ? ' · ' + feeds : ''}`;

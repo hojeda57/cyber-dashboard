@@ -120,12 +120,17 @@
 
     <!-- ================= MAPAS EXTERNOS ================= -->
     <section id="tab-mapas" class="tab-panel">
-      <div class="card">
-        <h3>Kaspersky Cyberthreat Real-Time Map</h3>
-        <iframe class="embed" src="https://cybermap.kaspersky.com/es/widget/dynamic/dark" title="Kaspersky Cybermap" loading="lazy" allowfullscreen></iframe>
-        <p class="muted">Widget oficial de Kaspersky. Estadísticas por país en <a href="https://cybermap.kaspersky.com/es/stats" target="_blank" rel="noopener">cybermap.kaspersky.com/es/stats</a>.</p>
+      <div class="card hero-map">
+        <div>
+          <h3>Kaspersky Cyberthreat Real-Time Map</h3>
+          <p class="muted">Mapa 3D en tiempo real con ataques detectados por las soluciones de Kaspersky (OAS, ODS, MAV, IDS, WAV, KAS, VUL). Kaspersky no permite embeberlo, se abre en una pestaña nueva.</p>
+        </div>
+        <div class="hero-actions">
+          <a class="btn" href="https://cybermap.kaspersky.com/es" target="_blank" rel="noopener">Abrir mapa en vivo ↗</a>
+          <a class="btn ghost" href="https://cybermap.kaspersky.com/es/stats" target="_blank" rel="noopener">Estadísticas por país ↗</a>
+        </div>
       </div>
-      <p class="muted">Estos mapas no permiten ser embebidos (bloquean iframes), se abren en una pestaña nueva:</p>
+      <p class="muted">Otros mapas de amenazas en tiempo real (se abren en una pestaña nueva):</p>
       <div class="grid g-3" id="external-maps"></div>
     </section>
 

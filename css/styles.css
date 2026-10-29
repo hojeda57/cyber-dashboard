@@ -148,3 +148,11 @@ tr:hover td { background: rgba(0, 229, 255, .04); }
 .src-card .badge { align-self: flex-start; font-size: 11px; padding: 2px 8px; border-radius: 10px; background: var(--panel-2); border: 1px solid var(--border); }
 
 footer { text-align: center; color: var(--muted); padding: 20px; font-size: 12px; }
+
+/* ---------- Tarjeta destacada de mapas externos ---------- */
+.hero-map { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
+  background: linear-gradient(135deg, #121826 0%, #0f2a33 100%); border-color: #0e4d5c; }
+.hero-map > div:first-child { flex: 1; min-width: 260px; }
+.hero-map p { margin: 0; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.hero-actions .btn { text-decoration: none; }
