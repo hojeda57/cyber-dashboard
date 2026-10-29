@@ -197,9 +197,19 @@ function renderKPIs(list) {
 
 function initMap() {
   state.map = L.map('map', { worldCopyJump: true, minZoom: 2 }).setView([10, -20], 2);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; OpenStreetMap &copy; CARTO', subdomains: 'abcd', maxZoom: 10,
-  }).addTo(state.map);
+  // Mapa base oscuro sin API key (Esri). Si falla, cambia a OpenStreetMap.
+  const esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap', maxZoom: 16,
+  });
+  const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors', maxZoom: 10,
+  });
+  let errors = 0;
+  esri.on('tileerror', () => {
+    if (++errors === 5 && state.map.hasLayer(esri)) { state.map.removeLayer(esri); osm.addTo(state.map); }
+  });
+  esri.addTo(state.map);
+  L.control.layers({ 'Oscuro (Esri)': esri, 'OpenStreetMap': osm }, null, { position: 'topright' }).addTo(state.map);
   state.layer = L.layerGroup().addTo(state.map);
 }
 
