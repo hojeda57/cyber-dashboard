@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Threat Dashboard</title>
+  <meta name="description" content="Dashboard interactivo de ataques cibernéticos con datos de múltiples fuentes">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      <div>
+        <h1>Cyber Threat Dashboard</h1>
+        <small id="last-update">Cargando datos…</small>
+      </div>
+    </div>
+    <nav class="tabs">
+      <button class="tab active" data-tab="resumen">Resumen</button>
+      <button class="tab" data-tab="kev">Vulnerabilidades (CISA KEV)</button>
+      <button class="tab" data-tab="mapas">Mapas en tiempo real</button>
+      <button class="tab" data-tab="fuentes">Fuentes</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ================= RESUMEN ================= -->
+    <section id="tab-resumen" class="tab-panel active">
+      <div class="filters card">
+        <label>Desde <input type="date" id="f-from"></label>
+        <label>Hasta <input type="date" id="f-to"></label>
+        <label>Tipo <select id="f-type"><option value="">Todos</option></select></label>
+        <label>Severidad <select id="f-severity"><option value="">Todas</option></select></label>
+        <label>País <select id="f-country"><option value="">Todos</option></select></label>
+        <label>Sector <select id="f-sector"><option value="">Todos</option></select></label>
+        <label>Fuente <select id="f-source"><option value="">Todas</option></select></label>
+        <label class="grow">Buscar <input type="search" id="f-q" placeholder="host, grupo, malware…"></label>
+        <div class="filter-actions">
+          <button id="btn-reset" class="btn ghost">Limpiar</button>
+          <button id="btn-export" class="btn">Exportar CSV</button>
+        </div>
+        <div id="active-filters" class="chips"></div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi card"><span>Eventos</span><strong id="kpi-total">0</strong></div>
+        <div class="kpi card crit"><span>Críticos</span><strong id="kpi-crit">0</strong></div>
+        <div class="kpi card"><span>Países afectados</span><strong id="kpi-countries">0</strong></div>
+        <div class="kpi card"><span>Tipo más frecuente</span><strong id="kpi-toptype">—</strong></div>
+        <div class="kpi card ar"><span>Eventos en Argentina</span><strong id="kpi-ar">0</strong></div>
+      </div>
+
+      <div class="grid g-map">
+        <div class="card">
+          <h3>Mapa de eventos <small>(clic en un país para filtrar)</small></h3>
+          <div id="map"></div>
+        </div>
+        <div class="card">
+          <h3>Severidad</h3>
+          <div class="chart-box"><canvas id="ch-severity"></canvas></div>
+          <h3>Fuente de datos</h3>
+          <div class="chart-box"><canvas id="ch-source"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Evolución diaria por severidad</h3>
+        <div class="chart-box tall"><canvas id="ch-timeline"></canvas></div>
+      </div>
+
+      <div class="grid g-3">
+        <div class="card"><h3>Por tipo de ataque</h3><div class="chart-box tall"><canvas id="ch-type"></canvas></div></div>
+        <div class="card"><h3>Por sector</h3><div class="chart-box tall"><canvas id="ch-sector"></canvas></div></div>
+        <div class="card"><h3>Top 10 países</h3><div class="chart-box tall"><canvas id="ch-country"></canvas></div></div>
+      </div>
+
+      <div class="card" id="shodan-card" hidden>
+        <h3>Exposición en Argentina según Shodan <small id="shodan-total"></small></h3>
+        <div class="grid g-2">
+          <div class="chart-box tall"><canvas id="ch-shodan-ports"></canvas></div>
+          <div class="chart-box tall"><canvas id="ch-shodan-products"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Últimos eventos <small id="table-count"></small></h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Fecha</th><th>Tipo</th><th>Severidad</th><th>País</th><th>Sector</th><th>Objetivo</th><th>Detalle</th><th>Fuente</th></tr></thead>
+            <tbody id="events-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= KEV ================= -->
+    <section id="tab-kev" class="tab-panel">
+      <div class="filters card">
+        <label class="grow">Buscar <input type="search" id="kev-q" placeholder="CVE, producto, descripción…"></label>
+        <label>Fabricante <select id="kev-vendor"><option value="">Todos</option></select></label>
+        <label>Año <select id="kev-year"><option value="">Todos</option></select></label>
+        <label class="check"><input type="checkbox" id="kev-ransom"> Usada en ransomware</label>
+      </div>
+      <div class="grid g-2">
+        <div class="card"><h3>Top 10 fabricantes</h3><div class="chart-box tall"><canvas id="ch-kev"></canvas></div></div>
+        <div class="card"><h3>Altas por mes (últimos 24)</h3><div class="chart-box tall"><canvas id="ch-kev-month"></canvas></div></div>
+      </div>
+      <div class="card">
+        <h3>Vulnerabilidades explotadas activamente <small id="kev-count"></small></h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Alta</th><th>CVE</th><th>Fabricante</th><th>Producto</th><th>Nombre</th><th>Ransomware</th><th>Vence</th></tr></thead>
+            <tbody id="kev-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MAPAS EXTERNOS ================= -->
+    <section id="tab-mapas" class="tab-panel">
+      <div class="card">
+        <h3>Kaspersky Cyberthreat Real-Time Map</h3>
+        <iframe class="embed" src="https://cybermap.kaspersky.com/es/widget/dynamic/dark" title="Kaspersky Cybermap" loading="lazy" allowfullscreen></iframe>
+        <p class="muted">Widget oficial de Kaspersky. Estadísticas por país en <a href="https://cybermap.kaspersky.com/es/stats" target="_blank" rel="noopener">cybermap.kaspersky.com/es/stats</a>.</p>
+      </div>
+      <p class="muted">Estos mapas no permiten ser embebidos (bloquean iframes), se abren en una pestaña nueva:</p>
+      <div class="grid g-3" id="external-maps"></div>
+    </section>
+
+    <!-- ================= FUENTES ================= -->
+    <section id="tab-fuentes" class="tab-panel">
+      <div class="grid g-3" id="sources-list"></div>
+      <div class="card">
+        <h3>Notas</h3>
+        <ul class="muted">
+          <li>Los datos de <b>muestra</b> son sintéticos con el formato del dataset de Kaggle; reemplazalos con <code>scripts/kaggle_to_json.py</code>.</li>
+          <li>Los feeds en vivo (ransomware.live, abuse.ch Feodo Tracker, CISA KEV) se descargan cada 6 h con GitHub Actions.</li>
+          <li>Shodan e IntelX requieren API key: nunca la pongas en el frontend, usá <i>Secrets</i> del repositorio y el workflow.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>Proyecto estático para GitHub Pages · datos con fines educativos</footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
