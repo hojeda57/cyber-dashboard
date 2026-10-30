@@ -120,15 +120,18 @@
 
     <!-- ================= MAPAS EXTERNOS ================= -->
     <section id="tab-mapas" class="tab-panel">
-      <div class="card hero-map">
-        <div>
-          <h3>Kaspersky Cyberthreat Real-Time Map</h3>
-          <p class="muted">Mapa 3D en tiempo real con ataques detectados por las soluciones de Kaspersky (OAS, ODS, MAV, IDS, WAV, KAS, VUL). Kaspersky no permite embeberlo, se abre en una pestaña nueva.</p>
+      <div class="card">
+        <div class="hero-map">
+          <div>
+            <h3>Kaspersky Cyberthreat Real-Time Map</h3>
+            <p class="muted">Ataques detectados en tiempo real por las soluciones de Kaspersky. Si el recuadro queda gris, tu navegador o tu red no llegan a Kaspersky: usá los botones.</p>
+          </div>
+          <div class="hero-actions">
+            <a class="btn" href="https://cybermap.kaspersky.com/es" target="_blank" rel="noopener">Abrir en pestaña ↗</a>
+            <a class="btn ghost" href="https://cybermap.kaspersky.com/es/stats" target="_blank" rel="noopener">Estadísticas ↗</a>
+          </div>
         </div>
-        <div class="hero-actions">
-          <a class="btn" href="https://cybermap.kaspersky.com/es" target="_blank" rel="noopener">Abrir mapa en vivo ↗</a>
-          <a class="btn ghost" href="https://cybermap.kaspersky.com/es/stats" target="_blank" rel="noopener">Estadísticas por país ↗</a>
-        </div>
+        <iframe class="embed" src="https://cybermap.kaspersky.com/es/widget/dynamic/dark" title="Kaspersky Cybermap" loading="lazy" allowfullscreen referrerpolicy="no-referrer"></iframe>
       </div>
       <p class="muted">Otros mapas de amenazas en tiempo real (se abren en una pestaña nueva):</p>
       <div class="grid g-3" id="external-maps"></div>

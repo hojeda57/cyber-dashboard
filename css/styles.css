@@ -150,8 +150,8 @@ tr:hover td { background: rgba(0, 229, 255, .04); }
 footer { text-align: center; color: var(--muted); padding: 20px; font-size: 12px; }
 
 /* ---------- Tarjeta destacada de mapas externos ---------- */
-.hero-map { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
-  background: linear-gradient(135deg, #121826 0%, #0f2a33 100%); border-color: #0e4d5c; }
+.hero-map { margin-bottom: 12px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
+  }
 .hero-map > div:first-child { flex: 1; min-width: 260px; }
 .hero-map p { margin: 0; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
