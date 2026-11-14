@@ -1,1 +1,1 @@
-{"updated":"2026-11-14T18:06:04+00:00","sources":{"ransomware.live":{"ok":true,"count":100},"abuse.ch Feodo":{"ok":true,"count":0},"base":{"ok":true,"count":1800},"CISA KEV":{"ok":true,"count":1781}}}
+{"updated":"2026-11-14T22:27:53+00:00","sources":{"ransomware.live":{"ok":false,"count":100,"error":"<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1011)>"},"abuse.ch Feodo":{"ok":true,"count":0},"base":{"ok":true,"count":1800},"CISA KEV":{"ok":true,"count":1781}}}
